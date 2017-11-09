@@ -1,6 +1,6 @@
 # Ren
 
-Solution for multiple helper, extension and implementation libraries for personal use.
+Solution for multiple helper and implementation libraries for personal use.
 
 # [Ren.NotifyIcon](https://github.com/korewa/Ren/tree/master/Ren.NotifyIcon): 
 
