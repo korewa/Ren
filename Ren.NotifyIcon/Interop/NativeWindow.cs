@@ -27,8 +27,11 @@ namespace Ren.NotifyIcon.Interop
 
         #region Constructor
 
-        public NativeWindow()
+        public NativeWindow(bool isDesignMode)
         {
+            if (isDesignMode)
+                return;
+
             ClassName = $"{nameof(NotifyIcon)}-{DateTime.Now.Ticks}";
             _messageReceiver = OnMessageReceived;
 
@@ -42,6 +45,11 @@ namespace Ren.NotifyIcon.Interop
         #endregion Constructor
 
         #region Methods
+
+        //public static NativeWindow GetEmptyNativeWindow()
+        //{
+        //    return new NativeWindow(true) { Handle = IntPtr.Zero };
+        //}
 
         private IntPtr OnMessageReceived(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
         {

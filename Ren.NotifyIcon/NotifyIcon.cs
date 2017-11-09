@@ -24,7 +24,7 @@ namespace Ren.NotifyIcon
 
         private bool _exists;
 
-        private NativeWindow _window = new NativeWindow();
+        private NativeWindow _window = new NativeWindow(NotifyIconHelpers.IsInDesignMode);
 
         #endregion Fields
 
@@ -60,7 +60,8 @@ namespace Ren.NotifyIcon
 
         private void OnIconSourcePropertyChanged(DependencyPropertyChangedEventArgs e)
         {
-            Icon = NotifyIconHelpers.GetIconFromImageSource((ImageSource)e.NewValue);
+            if (!NotifyIconHelpers.IsInDesignMode)
+                Icon = NotifyIconHelpers.GetIconFromImageSource((ImageSource)e.NewValue);
         }
 
         [Category(Category)]

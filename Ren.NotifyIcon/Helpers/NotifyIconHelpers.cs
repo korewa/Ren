@@ -1,5 +1,6 @@
 ﻿using Ren.NotifyIcon.Interop;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -42,5 +43,7 @@ namespace Ren.NotifyIcon.Helpers
 
             return data;
         }
+
+        public static bool IsInDesignMode => (bool)DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement)).Metadata.DefaultValue;
     }
 }
