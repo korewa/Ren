@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\NotifyIconHelpers.cs" />
-    <Compile Include="Interop\MouseButton.cs" />
+    <Compile Include="Interop\NotifyIconMouseButton.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Interop\NativePoint.cs" />
     <Compile Include="Interop\NativeWindow.cs" />

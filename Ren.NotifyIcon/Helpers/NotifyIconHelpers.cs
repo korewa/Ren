@@ -4,12 +4,21 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Ren.NotifyIcon.Helpers
 {
     public static class NotifyIconHelpers
     {
+        public static void ExecuteCommand(ICommand command)
+        {
+            if (command == null)
+                return;
+
+            command.Execute(null);
+        }
+
         public static bool SetIconData(ref NotifyIconData data, NotifyIconMessage message, NotifyIconFlags flags)
         {
             data.uFlags = flags;

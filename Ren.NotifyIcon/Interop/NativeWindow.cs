@@ -21,7 +21,7 @@ namespace Ren.NotifyIcon.Interop
 
         #region Events
 
-        public event Action<MouseButton> MouseButtonEventReceived;
+        public event Action<NotifyIconMouseButton> MouseButtonEventReceived;
 
         #endregion Events
 
@@ -46,11 +46,6 @@ namespace Ren.NotifyIcon.Interop
 
         #region Methods
 
-        //public static NativeWindow GetEmptyNativeWindow()
-        //{
-        //    return new NativeWindow(true) { Handle = IntPtr.Zero };
-        //}
-
         private IntPtr OnMessageReceived(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
         {
             ProcessReceivedMessage(uMsg, wParam, lParam);
@@ -64,12 +59,12 @@ namespace Ren.NotifyIcon.Interop
 
             switch (lParam.ToInt32())
             {
-                case (int)MouseButton.LeftButton:
-                    MouseButtonEventReceived(MouseButton.LeftButton);
+                case (int)NotifyIconMouseButton.LeftButton:
+                    MouseButtonEventReceived(NotifyIconMouseButton.LeftButton);
                     break;
 
-                case (int)MouseButton.RightButton:
-                    MouseButtonEventReceived(MouseButton.RightButton);
+                case (int)NotifyIconMouseButton.RightButton:
+                    MouseButtonEventReceived(NotifyIconMouseButton.RightButton);
                     break;
 
                 default:

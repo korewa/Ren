@@ -2,10 +2,10 @@
 using Ren.NotifyIcon.Interop;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -72,18 +72,40 @@ namespace Ren.NotifyIcon
             set => SetValue(IconSourceProperty, value);
         }
 
-        public static readonly DependencyProperty ContextMenuOpenMouseButtonProperty = DependencyProperty.Register(nameof(ContextMenuOpenMouseButton), 
-            typeof(MouseButton), 
-            typeof(NotifyIcon), 
-            new FrameworkPropertyMetadata(MouseButton.RightButton));
+        public static readonly DependencyProperty ContextMenuOpenMouseButtonProperty = DependencyProperty.Register(nameof(ContextMenuOpenMouseButton),
+            typeof(NotifyIconMouseButton),
+            typeof(NotifyIcon),
+            new FrameworkPropertyMetadata(NotifyIconMouseButton.RightButton));
 
         [Category(Category)]
-        public MouseButton ContextMenuOpenMouseButton
+        public NotifyIconMouseButton ContextMenuOpenMouseButton
         {
-            get => (MouseButton)GetValue(ContextMenuOpenMouseButtonProperty);
+            get => (NotifyIconMouseButton)GetValue(ContextMenuOpenMouseButtonProperty);
             set => SetValue(ContextMenuOpenMouseButtonProperty, value);
         }
-        
+
+        public static readonly DependencyProperty LeftMouseButtonCommandProperty = DependencyProperty.Register(nameof(LeftMouseButtonCommand),
+            typeof(ICommand),
+            typeof(NotifyIcon));
+
+        [Category(Category)]
+        public ICommand LeftMouseButtonCommand
+        {
+            get => (ICommand)GetValue(LeftMouseButtonCommandProperty);
+            set => SetValue(ContextMenuOpenMouseButtonProperty, value);
+        }
+
+        public static readonly DependencyProperty RightMouseButtonCommandProperty = DependencyProperty.Register(nameof(RightMouseButtonCommand),
+            typeof(ICommand),
+            typeof(NotifyIcon));
+
+        [Category(Category)]
+        public ICommand RightMouseButtonCommand
+        {
+            get => (ICommand)GetValue(RightMouseButtonCommandProperty);
+            set => SetValue(ContextMenuOpenMouseButtonProperty, value);
+        }
+
         #endregion Dependency Properties
 
         #region Constructor
@@ -103,14 +125,18 @@ namespace Ren.NotifyIcon
 
         #region Methods
 
-        private void OnMouseButtonEventReceived(MouseButton mouseButton)
+        private void OnMouseButtonEventReceived(NotifyIconMouseButton mouseButton)
         {
             switch (mouseButton)
             {
-                case MouseButton.LeftButton:
+                case NotifyIconMouseButton.LeftButton:
+                    NotifyIconHelpers.ExecuteCommand(LeftMouseButtonCommand);
                     break;
-                case MouseButton.RightButton:
+
+                case NotifyIconMouseButton.RightButton:
+                    NotifyIconHelpers.ExecuteCommand(RightMouseButtonCommand);
                     break;
+
                 default:
                     break;
             }
@@ -120,6 +146,7 @@ namespace Ren.NotifyIcon
 
             var position = new NativePoint();
             Native.GetCursorPos(ref position);
+
             ShowContextMenu(position);
         }
 
@@ -134,9 +161,9 @@ namespace Ren.NotifyIcon
             ContextMenu.IsOpen = true;
 
             var source = (HwndSource)PresentationSource.FromVisual(ContextMenu);
-            if (source != null)
+            if (source == null)
                 return;
-           
+
             Native.SetForegroundWindow(source.Handle);
         }
 
