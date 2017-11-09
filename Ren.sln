@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ren.NotifyIcon", "Ren.Notif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ren.Tests", "Ren.Tests\Ren.Tests.csproj", "{30A3FAD0-CBF7-48DB-B2CE-60425D673D7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ren.MVVM", "Ren.MVVM\Ren.MVVM.csproj", "{B0D83F6B-60A2-4AAB-860E-39572AC6A2F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{30A3FAD0-CBF7-48DB-B2CE-60425D673D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A3FAD0-CBF7-48DB-B2CE-60425D673D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A3FAD0-CBF7-48DB-B2CE-60425D673D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D83F6B-60A2-4AAB-860E-39572AC6A2F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D83F6B-60A2-4AAB-860E-39572AC6A2F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D83F6B-60A2-4AAB-860E-39572AC6A2F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D83F6B-60A2-4AAB-860E-39572AC6A2F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
