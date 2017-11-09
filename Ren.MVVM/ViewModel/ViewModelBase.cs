@@ -12,9 +12,13 @@ namespace Ren.MVVM.ViewModel
 
         protected virtual bool SetProperty<T>(ref T setter, T value, [CallerMemberName] string propertyName = default(string))
         {
-            if (EqualityComparer<T>.Default.Equals(setter, value)) return false;
+            if (EqualityComparer<T>.Default.Equals(setter, value))
+                return false;
+
             setter = value;
+
             OnPropertyChanged(propertyName);
+
             return true;
         }
     }
