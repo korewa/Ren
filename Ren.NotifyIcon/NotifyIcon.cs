@@ -2,6 +2,7 @@
 using Ren.NotifyIcon.Interop;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -67,10 +68,22 @@ namespace Ren.NotifyIcon
         [Category(Category)]
         public ImageSource IconSource
         {
-            get { return (ImageSource)GetValue(IconSourceProperty); }
-            set { SetValue(IconSourceProperty, value); }
+            get => (ImageSource)GetValue(IconSourceProperty);
+            set => SetValue(IconSourceProperty, value);
         }
 
+        public static readonly DependencyProperty ContextMenuOpenMouseButtonProperty = DependencyProperty.Register(nameof(ContextMenuOpenMouseButton), 
+            typeof(MouseButton), 
+            typeof(NotifyIcon), 
+            new FrameworkPropertyMetadata(MouseButton.RightButton));
+
+        [Category(Category)]
+        public MouseButton ContextMenuOpenMouseButton
+        {
+            get => (MouseButton)GetValue(ContextMenuOpenMouseButtonProperty);
+            set => SetValue(ContextMenuOpenMouseButtonProperty, value);
+        }
+        
         #endregion Dependency Properties
 
         #region Constructor
@@ -92,35 +105,39 @@ namespace Ren.NotifyIcon
 
         private void OnMouseButtonEventReceived(MouseButton mouseButton)
         {
-            if (!Equals(mouseButton, MouseButton.RightButton))
+            switch (mouseButton)
+            {
+                case MouseButton.LeftButton:
+                    break;
+                case MouseButton.RightButton:
+                    break;
+                default:
+                    break;
+            }
+
+            if (!Equals(ContextMenuOpenMouseButton, mouseButton))
                 return;
 
             var position = new NativePoint();
-            Native.GetPhysicalCursorPos(ref position);
-
+            Native.GetCursorPos(ref position);
             ShowContextMenu(position);
         }
 
-        // rewrite
         private void ShowContextMenu(NativePoint position)
         {
-            if (ContextMenu != null)
-            {
-                ContextMenu.Placement = PlacementMode.AbsolutePoint;
-                ContextMenu.HorizontalOffset = position.X;
-                ContextMenu.VerticalOffset = position.Y;
-                ContextMenu.IsOpen = true;
+            if (ContextMenu == null)
+                return;
 
-                var handle = IntPtr.Zero;
+            ContextMenu.Placement = PlacementMode.AbsolutePoint;
+            ContextMenu.HorizontalOffset = position.X;
+            ContextMenu.VerticalOffset = position.Y;
+            ContextMenu.IsOpen = true;
 
-                var source = (HwndSource)PresentationSource.FromVisual(ContextMenu);
-                if (source != null)
-                {
-                    handle = source.Handle;
-                }
-
-                Native.SetForegroundWindow(handle);
-            }
+            var source = (HwndSource)PresentationSource.FromVisual(ContextMenu);
+            if (source != null)
+                return;
+           
+            Native.SetForegroundWindow(source.Handle);
         }
 
         private void RemoveNotifyIcon()

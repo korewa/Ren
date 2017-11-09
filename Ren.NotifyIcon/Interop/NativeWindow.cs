@@ -68,10 +68,6 @@ namespace Ren.NotifyIcon.Interop
                     MouseButtonEventReceived(MouseButton.LeftButton);
                     break;
 
-                case (int)MouseButton.LeftButtonDoubleClick:
-                    MouseButtonEventReceived(MouseButton.LeftButtonDoubleClick);
-                    break;
-
                 case (int)MouseButton.RightButton:
                     MouseButtonEventReceived(MouseButton.RightButton);
                     break;

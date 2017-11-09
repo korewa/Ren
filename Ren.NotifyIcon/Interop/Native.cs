@@ -32,22 +32,18 @@ namespace Ren.NotifyIcon.Interop
             IntPtr hWnd);
 
         [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetCursorPos(ref NativePoint lpPoint);
+
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern ushort RegisterClassEx(
             [In] ref WindowClassEx lpwcx);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         public static extern bool Shell_NotifyIcon(
             NotifyIconMessage message,
             [In] ref NotifyIconData data);
-
-        //Testing
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetCursorPos(ref NativePoint lpPoint);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetPhysicalCursorPos(ref NativePoint lpPoint);
-
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }
