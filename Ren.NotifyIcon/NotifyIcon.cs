@@ -34,12 +34,25 @@ namespace Ren.NotifyIcon
 
         public Icon Icon
         {
-            get { return _icon; }
+            get => _icon;
             set
             {
                 _icon = value;
                 _data.hIcon = value != null ? _icon.Handle : IntPtr.Zero;
                 NotifyIconHelpers.SetIconData(ref _data, NotifyIconMessage.Modify, NotifyIconFlags.Icon);
+            }
+        }
+
+        private string _tip;
+
+        public string Tip
+        {
+            get => _tip;
+            set
+            {
+                _tip = value;
+                _data.szTip = value ?? null;
+                NotifyIconHelpers.SetIconData(ref _data, NotifyIconMessage.Modify, NotifyIconFlags.Tip);
             }
         }
 
@@ -81,6 +94,30 @@ namespace Ren.NotifyIcon
         {
             get => (NotifyIconMouseButton)GetValue(ContextMenuOpenMouseButtonProperty);
             set => SetValue(ContextMenuOpenMouseButtonProperty, value);
+        }
+
+        public static readonly DependencyProperty NotifyIconToolTipProperty = DependencyProperty.Register(nameof(NotifyIconToolTip),
+            typeof(string),
+            typeof(NotifyIcon),
+            new FrameworkPropertyMetadata(NotifyIconToolTipPropertyChanged));
+
+        private static void NotifyIconToolTipPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var obj = (NotifyIcon)d;
+            obj.OnNotifyIconToolTipPropertyChanged(e);
+        }
+
+        private void OnNotifyIconToolTipPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (!NotifyIconHelpers.IsInDesignMode)
+                Tip = (string)e.NewValue;
+        }
+
+        [Category(Category)]
+        public string NotifyIconToolTip
+        {
+            get => (string)GetValue(NotifyIconToolTipProperty);
+            set => SetValue(NotifyIconToolTipProperty, value);
         }
 
         #endregion Dependency Properties

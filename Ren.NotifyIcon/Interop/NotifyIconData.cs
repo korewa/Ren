@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Ren.NotifyIcon.Interop
 {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct NotifyIconData
     {
         public uint cbSize;
