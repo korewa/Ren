@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -84,29 +83,33 @@ namespace Ren.NotifyIcon
             set => SetValue(ContextMenuOpenMouseButtonProperty, value);
         }
 
-        public static readonly DependencyProperty LeftMouseButtonCommandProperty = DependencyProperty.Register(nameof(LeftMouseButtonCommand),
-            typeof(ICommand),
-            typeof(NotifyIcon));
-
-        [Category(Category)]
-        public ICommand LeftMouseButtonCommand
-        {
-            get => (ICommand)GetValue(LeftMouseButtonCommandProperty);
-            set => SetValue(ContextMenuOpenMouseButtonProperty, value);
-        }
-
-        public static readonly DependencyProperty RightMouseButtonCommandProperty = DependencyProperty.Register(nameof(RightMouseButtonCommand),
-            typeof(ICommand),
-            typeof(NotifyIcon));
-
-        [Category(Category)]
-        public ICommand RightMouseButtonCommand
-        {
-            get => (ICommand)GetValue(RightMouseButtonCommandProperty);
-            set => SetValue(ContextMenuOpenMouseButtonProperty, value);
-        }
-
         #endregion Dependency Properties
+
+        #region Routed Events
+
+        public static readonly RoutedEvent NotifyIconLeftButtonMouseDownEvent = EventManager.RegisterRoutedEvent(nameof(NotifyIconLeftButtonMouseDown),
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(NotifyIcon));
+
+        public event RoutedEventHandler NotifyIconLeftButtonMouseDown
+        {
+            add { AddHandler(NotifyIconLeftButtonMouseDownEvent, value); }
+            remove { RemoveHandler(NotifyIconLeftButtonMouseDownEvent, value); }
+        }
+
+        public static readonly RoutedEvent NotifyIconRightButtonMouseDownEvent = EventManager.RegisterRoutedEvent(nameof(NotifyIconRightButtonMouseDown),
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(NotifyIcon));
+
+        public event RoutedEventHandler NotifyIconRightButtonMouseDown
+        {
+            add { AddHandler(NotifyIconRightButtonMouseDownEvent, value); }
+            remove { RemoveHandler(NotifyIconRightButtonMouseDownEvent, value); }
+        }
+
+        #endregion Routed Events
 
         #region Constructor
 
@@ -130,11 +133,11 @@ namespace Ren.NotifyIcon
             switch (mouseButton)
             {
                 case NotifyIconMouseButton.LeftButton:
-                    NotifyIconHelpers.ExecuteCommand(LeftMouseButtonCommand);
+                    NotifyIconHelpers.RaiseEvent(this, NotifyIconLeftButtonMouseDownEvent);
                     break;
 
                 case NotifyIconMouseButton.RightButton:
-                    NotifyIconHelpers.ExecuteCommand(RightMouseButtonCommand);
+                    NotifyIconHelpers.RaiseEvent(this, NotifyIconRightButtonMouseDownEvent);
                     break;
 
                 default:

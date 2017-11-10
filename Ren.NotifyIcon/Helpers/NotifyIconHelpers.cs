@@ -4,19 +4,16 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Ren.NotifyIcon.Helpers
 {
     public static class NotifyIconHelpers
     {
-        public static void ExecuteCommand(ICommand command)
+        public static void RaiseEvent(DependencyObject target, RoutedEvent e)
         {
-            if (command == null)
-                return;
-
-            command.Execute(null);
+            if (target is UIElement)
+                (target as UIElement).RaiseEvent(new RoutedEventArgs(e));
         }
 
         public static bool SetIconData(ref NotifyIconData data, NotifyIconMessage message, NotifyIconFlags flags)
