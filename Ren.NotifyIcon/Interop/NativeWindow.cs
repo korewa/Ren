@@ -9,6 +9,8 @@ namespace Ren.NotifyIcon.Interop
 
         private WindowProc _messageReceiver;
 
+        private uint _creationMessage;
+
         #endregion Fields
 
         #region Properties
@@ -23,6 +25,8 @@ namespace Ren.NotifyIcon.Interop
 
         public event Action<NotifyIconMouseButton> MouseButtonEventReceived;
 
+        public event Action CreatedEvent;
+
         #endregion Events
 
         #region Constructor
@@ -33,13 +37,16 @@ namespace Ren.NotifyIcon.Interop
                 return;
 
             ClassName = $"{nameof(NotifyIcon)}-{DateTime.Now.Ticks}";
+
             _messageReceiver = OnMessageReceived;
+
+            _creationMessage = Native.RegisterWindowMessageW("TaskbarCreated");
 
             var windowClass = new WindowClassEx() { cbSize = (uint)Marshal.SizeOf(typeof(WindowClassEx)), lpszClassName = ClassName, lpfnWndProc = _messageReceiver };
 
-            Native.RegisterClassEx(ref windowClass);
+            Native.RegisterClassExW(ref windowClass);
 
-            Handle = Native.CreateWindowEx(0, ClassName, string.Empty, 0, 0, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+            Handle = Native.CreateWindowExW(0, ClassName, string.Empty, 0, 0, 0, 0, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
         }
 
         #endregion Constructor
@@ -48,6 +55,9 @@ namespace Ren.NotifyIcon.Interop
 
         private IntPtr OnMessageReceived(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
         {
+            if (uMsg == _creationMessage)
+                CreatedEvent();
+
             ProcessReceivedMessage(uMsg, wParam, lParam);
             return Native.DefWindowProc(hWnd, uMsg, wParam, lParam);
         }

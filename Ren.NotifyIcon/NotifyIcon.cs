@@ -155,10 +155,9 @@ namespace Ren.NotifyIcon
             _data = NotifyIconHelpers.GetDefaultNotifyIconData(_window.Handle);
 
             _window.MouseButtonEventReceived += OnMouseButtonEventReceived;
+            _window.CreatedEvent += OnCreatedEvent;
 
-            NotifyIconHelpers.SetIconData(ref _data, NotifyIconMessage.Add, NotifyIconFlags.Message | NotifyIconFlags.Icon | NotifyIconFlags.Tip);
-
-            _exists = true;
+            CreateNotifyIcon();
         }
 
         #endregion Constructor
@@ -188,6 +187,20 @@ namespace Ren.NotifyIcon
             Native.GetCursorPos(ref position);
 
             ShowContextMenu(position);
+        }
+
+        private void OnCreatedEvent()
+        {
+            _exists = false;
+            CreateNotifyIcon();
+        }
+
+        private void CreateNotifyIcon()
+        {
+            if (_exists)
+                return;
+
+            _exists = NotifyIconHelpers.SetIconData(ref _data, NotifyIconMessage.Add, NotifyIconFlags.Message | NotifyIconFlags.Icon | NotifyIconFlags.Tip);
         }
 
         private void ShowContextMenu(NativePoint position)

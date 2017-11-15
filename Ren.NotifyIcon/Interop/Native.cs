@@ -6,7 +6,7 @@ namespace Ren.NotifyIcon.Interop
     internal static class Native
     {
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr CreateWindowEx(
+        public static extern IntPtr CreateWindowExW(
             uint dwExStyle,
             [MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
             [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName,
@@ -35,8 +35,12 @@ namespace Ren.NotifyIcon.Interop
         public static extern bool GetCursorPos(ref NativePoint lpPoint);
 
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern ushort RegisterClassEx(
+        public static extern ushort RegisterClassExW(
             [In] ref WindowClassEx lpwcx);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint RegisterWindowMessageW(
+            [MarshalAs(UnmanagedType.LPWStr)] string lpString);
 
         [DllImport("user32.dll")]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
