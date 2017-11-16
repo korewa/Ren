@@ -25,7 +25,7 @@ namespace Ren.NotifyIcon.Interop
 
         public event Action<NotifyIconMouseButton> MouseButtonEventReceived;
 
-        public event Action CreatedEvent;
+        public event Action Created;
 
         #endregion Events
 
@@ -56,7 +56,7 @@ namespace Ren.NotifyIcon.Interop
         private IntPtr OnMessageReceived(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam)
         {
             if (uMsg == _creationMessage)
-                CreatedEvent();
+                Created();
 
             ProcessReceivedMessage(uMsg, wParam, lParam);
             return Native.DefWindowProc(hWnd, uMsg, wParam, lParam);

@@ -155,7 +155,7 @@ namespace Ren.NotifyIcon
             _data = NotifyIconHelpers.GetDefaultNotifyIconData(_window.Handle);
 
             _window.MouseButtonEventReceived += OnMouseButtonEventReceived;
-            _window.CreatedEvent += OnCreatedEvent;
+            _window.Created += OnCreated;
 
             CreateNotifyIcon();
         }
@@ -189,7 +189,7 @@ namespace Ren.NotifyIcon
             ShowContextMenu(position);
         }
 
-        private void OnCreatedEvent()
+        private void OnCreated()
         {
             _exists = false;
             CreateNotifyIcon();
