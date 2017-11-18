@@ -55,10 +55,9 @@ namespace Ren.Network.Upload
 
                         using (var response = await client.PostAsync(_service.RequestUri, content))
                         {
-                            var result = string.Empty;
-
-                            if (response.IsSuccessStatusCode)
-                                result = await response.Content.ReadAsStringAsync();
+                            var result = response.IsSuccessStatusCode
+                                ? await response.Content.ReadAsStringAsync()
+                                : string.Empty;
 
                             return !string.IsNullOrEmpty(result)
                                 ? new UploadServiceInfo(new Uri(Regex.Match(result, _service.Pattern).Value), true)
